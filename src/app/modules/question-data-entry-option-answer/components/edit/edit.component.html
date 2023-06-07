@@ -1,0 +1,101 @@
+<div class="content-wrapper">
+  <div class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="col-sm-6">
+          <h1 class="m-0">Update Question Data Entry Option Answer</h1>
+        </div>
+        <div class="col-sm-6">
+          <ol class="breadcrumb float-sm-right">
+            <li class="breadcrumb-item"><a href="#">Home</a></li>
+            <li class="breadcrumb-item active">Update Question Data Entry Option Answer</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <section class="content">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-12">
+          <div class="card card-secondary">
+
+            <form #panelForm="ngForm" (ngSubmit)="submit(panelForm)">
+              <div class="card-body">
+                <div class="row">
+                  <div class="col-md-6" *ngIf="questionDataEntryOptionAnswer.questionDataEntryOption.hasTextInput">
+                    <h6
+                      class="text-center">{{ questionDataEntryOptionAnswer.questionDataEntryOption.textInputTitle }}</h6>
+
+                    <div class="form-group">
+                        <textarea class="form-control" [(ngModel)]="questionDataEntryOptionAnswer.answer"
+                                  name="answer" placeholder="Enter complains / symptoms" rows="2"></textarea>
+                    </div>
+                  </div>
+
+                  <div class="col-md-4" *ngIf="questionDataEntryOptionAnswer.questionDataEntryOption.hasCalendarInput">
+                    <div class="row">
+                      <div class="col-md-4" *ngIf="questionDataEntryOptionAnswer.questionDataEntryOption.calendarSettingType === CalendarSettingType.YEAR_ONLY ||
+                      questionDataEntryOptionAnswer.questionDataEntryOption.calendarSettingType === CalendarSettingType.MONTH_AND_YEAR_ONLY ||
+                      questionDataEntryOptionAnswer.questionDataEntryOption.calendarSettingType === CalendarSettingType.DATE_MONTH_AND_YEAR_ONLY">
+                        <div class="form-group">
+                          <label>Year</label>
+                          <select class="form-control"
+                                  [(ngModel)]="questionDataEntryOptionAnswer.questionDataEntryOption.year"
+                                  (change)="onYearChange()" name="year">
+                            <option *ngFor="let y of questionDataEntryOptionAnswer.questionDataEntryOption.years"
+                                    [value]="y">{{ y }}</option>
+                          </select>
+                        </div>
+                      </div>
+
+                      <div class="col-md-4" *ngIf="questionDataEntryOptionAnswer.questionDataEntryOption.calendarSettingType === CalendarSettingType.MONTH_ONLY ||
+                      questionDataEntryOptionAnswer.questionDataEntryOption.calendarSettingType === CalendarSettingType.MONTH_AND_YEAR_ONLY ||
+                      questionDataEntryOptionAnswer.questionDataEntryOption.calendarSettingType === CalendarSettingType.DATE_MONTH_AND_YEAR_ONLY">
+                        <div class="form-group">
+                          <label>Month</label>
+                          <select class="form-control"
+                                  [(ngModel)]="questionDataEntryOptionAnswer.questionDataEntryOption.month"
+                                  (change)="onMonthChange()" name="month">
+                            <option *ngFor="let m of questionDataEntryOptionAnswer.questionDataEntryOption.months"
+                                    [value]="m">{{ m }}</option>
+                          </select>
+                        </div>
+                      </div>
+
+                      <div class="col-md-4"
+                           *ngIf="questionDataEntryOptionAnswer.questionDataEntryOption.calendarSettingType === CalendarSettingType.DATE_MONTH_AND_YEAR_ONLY">
+                        <div class="form-group">
+                          <label>Day</label>
+                          <select class="form-control"
+                                  [(ngModel)]="questionDataEntryOptionAnswer.questionDataEntryOption.day" name="day">
+                            <option *ngFor="let d of questionDataEntryOptionAnswer.questionDataEntryOption.days"
+                                    [value]="d">{{ d }}</option>
+                          </select>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="col-md-2">
+                    <div class="form-group" *ngIf="questionDataEntryOptionAnswer.questionDataEntryOption.hasTimeInput">
+                      <label>Time</label>
+                      <input class="form-control" type="time"
+                             [(ngModel)]="questionDataEntryOptionAnswer.questionDataEntryOption.time" name="time"
+                             placeholder="Time">
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="card-footer clearfix">
+                <button type="submit" class="btn btn-warning" style="color: white;">Update</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>

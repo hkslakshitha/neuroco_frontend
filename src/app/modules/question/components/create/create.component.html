@@ -1,0 +1,271 @@
+<div class="content-wrapper">
+  <div class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="col-sm-6">
+          <h1 class="m-0">Add Question</h1>
+        </div>
+        <div class="col-sm-6">
+          <ol class="breadcrumb float-sm-right">
+            <li class="breadcrumb-item"><a href="#">Home</a></li>
+            <li class="breadcrumb-item active">Add Question</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <section class="content">
+    <div class="container-fluid">
+      <form (ngSubmit)="submit()">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title">
+                  Describe the question
+                </h3>
+              </div>
+
+              <div class="card-body">
+                <div class="form-group">
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" [(ngModel)]="question.isCompulsory" name="isCompulsory" style="margin-top: 6px;">
+                    <label class="form-check-label">Compulsory</label>
+                  </div>
+                </div>
+
+                <quill-editor [(ngModel)]="question.question"
+                              placeholder="Describe the question"
+                              name="question"
+                              [modules]="quillConfig"
+                ></quill-editor>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-12">
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title">
+                  Data entry option
+                </h3>
+                <div class="card-tools">
+                  <div class="form-group row">
+                    <div class="col-sm-4"></div>
+                    <label class="col-sm-5">Number of options:</label>
+                    <div class="col-sm-3">
+                      <div class="input-group input-group-sm">
+                        <input type="number" class="form-control" [(ngModel)]="question.numberOfOption" name="numberOfOption"
+                               placeholder="Number of Options">
+                        <span class="input-group-append">
+                        <button type="button" class="btn btn-warning" style="color: white;"
+                                (click)="generatePanels()">+</button>
+                      </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="card-body">
+                <div *ngFor="let questionDataEntryOption of question.questionDataEntryOptions; let i = index" [style.order]="i" [ngModelGroup]="'panel' + i">
+                  <div class="row">
+                    <div class="col-md-1">
+                      <div class="row">
+                        <div class="col-md-4"></div>
+                        <div class="col-md-2">
+                          <button type="button" class="btn btn-tool" (click)="moveUp(i)"
+                                  style="margin-top: 30px; color: black; font-size: 22px;"><i
+                            class="fas fa-long-arrow-alt-up"></i></button>
+                        </div>
+                        <div class="col-md-2">
+                          <button type="button" class="btn btn-tool" (click)="moveDown(i)"
+                                  style="margin-top: 30px; color: black; font-size: 22px;"><i
+                            class="fas fa-long-arrow-alt-down"></i></button>
+                        </div>
+                        <div class="col-md-4"></div>
+                      </div>
+                    </div>
+
+                    <div class="col-md-10">
+                      <div class="form-group">
+                        <label>Type option name</label>
+                        <input type="text" class="form-control" [(ngModel)]="questionDataEntryOption.name" name="name"
+                               placeholder="Option name">
+                      </div>
+                    </div>
+
+                    <div class="col-md-1">
+                      <button class="btn btn-warning" (click)="removePanel(i)"
+                              style="margin-top: 30px; border-radius: 20px; padding: 7px 14px; color: white;">X
+                      </button>
+                    </div>
+                  </div>
+
+                  <h6 class="text-center">What data do you enter row wise under this option?</h6>
+
+                  <div class="row">
+                    <div class="col-md-7">
+                      <div class="card card-warning card-outline" style="height: 250px;">
+                        <div class="card-header">
+                          <h3 class="card-title">
+                            <div class="form-check">
+                              <input class="form-check-input" type="checkbox" [(ngModel)]="questionDataEntryOption.hasTextInput"
+                                     name="isTextInput">
+                              <label class="form-check-label" style="margin-top: 1px;">Text Input</label>
+                            </div>
+                          </h3>
+                        </div>
+
+                        <div class="card-body">
+                          <div class="row">
+                            <div class="col-md-6">
+                              <div class="form-group">
+                                <label>Type the title of the text input</label>
+                                <textarea class="form-control" [(ngModel)]="questionDataEntryOption.textInputTitle"
+                                          name="textInputTitle" placeholder="Title of the text input" rows="5"></textarea>
+                              </div>
+                            </div>
+
+                            <div class="col-md-6">
+                              <div class="row">
+                                <div class="col-md-12">
+                                  <div class="form-group">
+                                    <label>Text answer settings</label>
+                                    <div class="row">
+                                      <div class="col-md-8">
+                                        <div class="form-check">
+                                          <input class="form-check-input" type="radio"
+                                                 [(ngModel)]="questionDataEntryOption.textAnswerSettingType" name="textAnswerSettingType{{i}}"
+                                                 value="Max words">
+                                          <label class="form-check-label">Max words</label>
+                                        </div>
+                                      </div>
+
+                                      <div class="col-md-4">
+                                        <div class="form-group">
+                                          <input type="number" class="form-control" [(ngModel)]="questionDataEntryOption.textAnswerSettingValue"
+                                                 name="textAnswerSettingValue" value="0">
+                                        </div>
+                                      </div>
+                                    </div>
+
+                                    <div class="row">
+                                      <div class="col-md-8">
+                                        <div class="form-check">
+                                          <input class="form-check-input" type="radio"
+                                                 [(ngModel)]="questionDataEntryOption.textAnswerSettingType" name="textAnswerSettingType{{i}}"
+                                                 value="Max characters">
+                                          <label class="form-check-label">Max characters</label>
+                                        </div>
+                                      </div>
+
+                                      <div class="col-md-4">
+                                        <div class="form-group">
+                                          <input type="number" class="form-control" [(ngModel)]="questionDataEntryOption.textAnswerSettingValue"
+                                                 name="textAnswerSettingValue" value="0">
+                                        </div>
+                                      </div>
+                                    </div>
+
+                                    <div class="row">
+                                      <div class="col-md-8">
+                                        <div class="form-check">
+                                          <input class="form-check-input" type="radio"
+                                                 [(ngModel)]="questionDataEntryOption.textAnswerSettingType" name="textAnswerSettingType{{i}}"
+                                                 value="Unlimited">
+                                          <label class="form-check-label">Unlimited</label>
+                                        </div>
+                                      </div>
+
+                                      <div class="col-md-4">
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="col-md-3">
+                      <div class="card card-warning card-outline" style="height: 250px;">
+                        <div class="card-header">
+                          <h3 class="card-title">
+                            <div class="form-check">
+                              <input class="form-check-input" type="checkbox" [(ngModel)]="questionDataEntryOption.hasCalendarInput"
+                                     name="isCalendar">
+                              <label class="form-check-label" style="margin-top: 1px;">Calender</label>
+                            </div>
+                          </h3>
+                        </div>
+
+                        <div class="card-body">
+                          <div class="row">
+                            <div class="col-md-12">
+                              <div class="form-group">
+                                <div class="form-check">
+                                  <input class="form-check-input" type="radio" [(ngModel)]="questionDataEntryOption.calendarSettingType"
+                                         name="calendarSettingType{{i}}"
+                                         value="Year only">
+                                  <label class="form-check-label">Year only</label>
+                                </div>
+                                <div class="form-check">
+                                  <input class="form-check-input" type="radio" [(ngModel)]="questionDataEntryOption.calendarSettingType"
+                                         name="calendarSettingType{{i}}"
+                                         value="Month only">
+                                  <label class="form-check-label">Month only</label>
+                                </div>
+                                <div class="form-check">
+                                  <input class="form-check-input" type="radio" [(ngModel)]="questionDataEntryOption.calendarSettingType"
+                                         name="calendarSettingType{{i}}"
+                                         value="Month and Year only">
+                                  <label class="form-check-label">Month and Year only</label>
+                                </div>
+                                <div class="form-check">
+                                  <input class="form-check-input" type="radio" [(ngModel)]="questionDataEntryOption.calendarSettingType"
+                                         name="calendarSettingType{{i}}"
+                                         value="Date, Month and Year only">
+                                  <label class="form-check-label">Date, Month and Year only</label>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="col-md-2">
+                      <div class="card card-warning card-outline" style="height: 250px;">
+                        <div class="card-header">
+                          <h3 class="card-title">
+                            <div class="form-check">
+                              <input class="form-check-input" type="checkbox" [(ngModel)]="questionDataEntryOption.hasTimeInput" name="hasTimeInput">
+                              <label class="form-check-label" style="margin-top: 1px;">Time</label>
+                            </div>
+                          </h3>
+                        </div>
+
+                        <div class="card-body">
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="card-footer clearfix">
+                <button type="submit" class="btn btn-warning" style="color: white;">Save</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </section>
+</div>

@@ -1,0 +1,29 @@
+<aside class="main-sidebar sidebar-dark-primary elevation-4">
+  <a href="#" class="brand-link" style="text-align: center;">
+    <span class="brand-text font-weight-light">NEUROCO</span>
+  </a>
+
+  <div class="sidebar">
+    <nav class="mt-2">
+      <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+        <li class="nav-item" *ngFor="let menuItem of menuItems" (click)="setMenuItemActive()" [ngClass]="{ 'menu-open': menuItem.menuOpen }">
+          <a href="#" [routerLink]="[menuItem.route]" class="nav-link" [ngClass]="{ active: menuItem.active }">
+            <i class="nav-icon {{ menuItem.icon }}"></i>
+            <p>
+              {{ menuItem.name }}
+              <i *ngIf="menuItem.children && menuItem.children.length > 0" class="right fas fa-angle-left"></i>
+            </p>
+          </a>
+          <ul class="nav nav-treeview" *ngIf="menuItem.children && menuItem.children.length > 0">
+            <li class="nav-item" *ngFor="let childItem of menuItem.children" (click)="setMenuItemActive()">
+              <a href="#" [routerLink]="[childItem.route]" class="nav-link"  [ngClass]="{ active: childItem.active }">
+                <i class="far fa-circle nav-icon"></i>
+                <p>{{ childItem.name }}</p>
+              </a>
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</aside>
